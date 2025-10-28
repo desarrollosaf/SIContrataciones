@@ -17,7 +17,7 @@ class Server {
 
     constructor(){
         this.app = express()
-        this.port = process.env.PORT || '3009'
+        this.port = process.env.PORT || '3012'
         this.midlewares();
         this.router();
         this.DBconnetc();
@@ -43,8 +43,8 @@ class Server {
     midlewares(){
         this.app.use(express.json())
         this.app.use(cors({
-            origin: 'http://localhost:4200',
-            //origin: 'https://ofrendas.congresoedomex.gob.mx',
+            //origin: 'http://localhost:4200',
+            origin: 'http://contrataciones.siasaf.gob.mx',
             credentials: true
         }));
 
