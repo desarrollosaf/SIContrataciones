@@ -43,8 +43,8 @@ class Server {
     midlewares(){
         this.app.use(express.json())
         this.app.use(cors({
-            //origin: 'http://localhost:4200',
-            origin: 'http://contrataciones.siasaf.gob.mx',
+            origin: 'http://localhost:4200',
+            //origin: 'http://contrataciones.siasaf.gob.mx',
             credentials: true
         }));
 
