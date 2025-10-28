@@ -66,7 +66,7 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         console.log(rows);
         const results = rows.map(r => {
-            const release = r.toJSON(); // aquí puedes tiparlo más si quieres
+            const release = r.toJSON();
             return {
                 metadata: release.metadata || null,
                 publisher: release.publisher || null,
@@ -97,7 +97,7 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
-        console.error('Error al obtener preguntas:', error);
+        console.error('Error al obtener contracts:', error);
         return res.status(500).json({ msg: 'Error interno del servidor' });
     }
 });

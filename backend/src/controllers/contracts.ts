@@ -56,7 +56,7 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
     console.log(rows)
  
     const results = rows.map(r => {
-      const release = r.toJSON() as any; // aquí puedes tiparlo más si quieres
+      const release = r.toJSON() as any; 
       return {
         metadata: release.metadata || null,
         publisher: release.publisher || null,
@@ -89,7 +89,7 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
     });
 
   } catch (error) {
-     console.error('Error al obtener preguntas:', error);
+     console.error('Error al obtener contracts:', error);
     return res.status(500).json({ msg: 'Error interno del servidor' });
   }
 }
