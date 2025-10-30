@@ -27,6 +27,8 @@ module.exports = {
     const budgets = [];
     const tenders = [];
     const tenderItems = [];
+    const tenderers = [];
+    const amendments = [];
     const awards = [];
     const suppliers = [];
     const contracts = [];
@@ -85,8 +87,7 @@ module.exports = {
       budgets.push({
         planningId: i,
         description: 'Fuente del presupuesto',
-        amount: faker.number.float({ min:10000, max:500000 }),
-        currency: 'MXN',
+        amount: JSON.stringify({ amount: faker.number.float({ min:10000, max:500000 }), currency: 'MXN' }),
         project: faker.lorem.words(3),
         projectID: faker.string.uuid(),
         uri: faker.internet.url(),
@@ -99,14 +100,63 @@ module.exports = {
         title: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
         status: 'planning',
-        procuringEntity: JSON.stringify({ name: faker.company.name(), id: faker.string.uuid() }),
+        procuringEntity: JSON.stringify({
+          id: faker.string.uuid(),
+          name: faker.company.name(),
+          identifier: {
+            scheme: 'RFC',
+            id: faker.string.alphanumeric(8),
+            legalName: faker.company.name(),
+            uri: faker.internet.url(),
+          },
+          additionalIdentifiers: [
+            {
+              scheme: 'CURP',
+              id: faker.string.alphanumeric(10),
+              legalName: faker.company.name(),
+              uri: faker.internet.url(),
+            }
+          ],
+          address: {
+            streetAddress: faker.location.streetAddress(),
+            locality: faker.location.city(),
+            region: faker.location.state(),
+            postalCode: faker.location.zipCode(),
+            countryName: faker.location.country(),
+          },
+          contactPoint: {
+            name: faker.person.fullName(),
+            email: faker.internet.email(),
+            telephone: faker.phone.number(),
+            faxNumber: faker.phone.number(),
+            url: faker.internet.url(),
+          },
+        }),
         value: JSON.stringify({ amount: faker.number.float({min:10000, max:500000}), currency: 'MXN' }),
         minValue: JSON.stringify({ amount: faker.number.float({min:1000, max:9000}), currency: 'MXN' }),
         procurementMethod: 'open',
+        procurementMethodDetails: faker.string.alphanumeric(8),
+        procurementMethodRationale: faker.string.alphanumeric(8),
+        mainProcurementCategory: 'goods',
+        additionalProcurementCategories: JSON.stringify([
+            'goods',
+          
+        ]),
+        awardCriteria: faker.string.alphanumeric(8),
+        awardCriteriaDetails: faker.string.alphanumeric(8),
+        submissionMethod: JSON.stringify([
+            'electronicSubmission',
+          
+        ]),
+        submissionMethodDetails: faker.string.alphanumeric(8),
         mainProcurementCategory: 'goods',
         submissionMethod: JSON.stringify(['electronicSubmission']),
-        tenderPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(), durationInDays: 10 }),
-        enquiryPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(), durationInDays: 10 }),
+        tenderPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(),  maxExtentDate: new Date(), durationInDays: 10 }),
+        enquiryPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(),  maxExtentDate: new Date(), durationInDays: 10 }),
+        hasEnquiries: faker.datatype.boolean(),
+        eligibilityCriteria: faker.string.alphanumeric(8),
+        awardPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(),  maxExtentDate: new Date(), durationInDays: 10 }),
+        contractPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(),  maxExtentDate: new Date(), durationInDays: 10 }),
         numberOfTenderers: faker.number.int({ min:1, max:50 }),
         createdAt: now,
         updatedAt: now
@@ -115,12 +165,50 @@ module.exports = {
         tenderId: i,
         description: faker.commerce.productDescription(),
         classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
-        additionalClassifications: JSON.stringify([]),
+        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
         quantity: faker.number.int({ min:1, max:100 }),
-        unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' } }),
+        unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
         createdAt: now,
         updatedAt: now
       });
+
+      tenderers.push({
+        tenderId: i,
+        name: faker.company.name(),
+        identifier: JSON.stringify({
+          scheme: 'RFC',
+          id: faker.string.alphanumeric(8),
+          legalName: faker.company.name(),
+          uri: faker.internet.url(),
+        }),
+        additionalIdentifiers: JSON.stringify([
+          {
+            scheme: 'CURP',
+            id: faker.string.alphanumeric(10),
+            legalName: faker.company.name(),
+            uri: faker.internet.url(),
+          }
+        ]),
+        address: JSON.stringify({
+          streetAddress: faker.location.streetAddress(),
+          locality: faker.location.city(),
+          region: faker.location.state(),
+          postalCode: faker.location.zipCode(),
+          countryName: faker.location.country(),
+        }),
+        contactPoint: JSON.stringify({
+          name: faker.person.fullName(),
+          email: faker.internet.email(),
+          telephone: faker.phone.number(),
+          faxNumber: faker.phone.number(),
+          url: faker.internet.url(),
+        }),
+        createdAt: now,
+        updatedAt: now
+      });
+
+          
+
       awards.push({
         releaseId: i,
         title: faker.lorem.words(3),
@@ -178,6 +266,7 @@ module.exports = {
     await queryInterface.bulkInsert('Budgets', budgets);
     await queryInterface.bulkInsert('Tenders', tenders);
     await queryInterface.bulkInsert('TenderItems', tenderItems);
+    await queryInterface.bulkInsert('Tenderers', tenderers);
     await queryInterface.bulkInsert('Awards', awards);
     await queryInterface.bulkInsert('Suppliers', suppliers);
     await queryInterface.bulkInsert('Contracts', contracts);
@@ -188,6 +277,32 @@ module.exports = {
     const documents = [];
     const milestones = [];
     const milestoneDocuments = [];
+
+    const numberOfAmendments = faker.number.int({ min: 3, max: 5 });
+
+    for (let i = 1; i <= 10; i++) {
+      const types = ['Tender', 'Award', 'Contract'];
+      for (const t of types) {
+        amendments.push({
+          parentType: t,
+          parentId: i,
+          amendmentId: faker.string.uuid(), 
+          description: faker.commerce.productDescription(),
+          rationale: faker.commerce.productDescription(),
+          amendsReleaseID: faker.string.alphanumeric(8),
+          releaseID: faker.string.alphanumeric(8),
+          date: faker.date.recent(),
+          changes:JSON.stringify({ 
+              property: 'someProperty',
+              former_value: faker.commerce.productName()
+          }),
+          isCurrent: 0, 
+          createdAt: now,
+          updatedAt: now
+        });
+    
+      }
+    }
 
     for (let i = 1; i <= 10; i++) {
       const types = ['Planning', 'Tender', 'Award', 'Contract', 'Implementation'];
@@ -242,6 +357,7 @@ module.exports = {
     await queryInterface.bulkInsert('documents', documents);
     await queryInterface.bulkInsert('milestones', milestones);
     await queryInterface.bulkInsert('milestoneDocuments', milestoneDocuments);
+    await queryInterface.bulkInsert('Amendments', amendments);
   },
 
   async down (queryInterface, Sequelize) {
@@ -262,5 +378,6 @@ module.exports = {
     await queryInterface.bulkDelete('Publishers', null, {});
     await queryInterface.bulkDelete('Metadata', null, {});
     await queryInterface.bulkDelete('Releases', null, {});
+    await queryInterface.bulkDelete('Amendments', amendments);
   }
 };

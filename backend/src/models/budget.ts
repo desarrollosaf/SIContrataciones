@@ -14,8 +14,7 @@ class Budget extends Model<
   declare id: CreationOptional<number>;
   declare planningId: number;
   declare description: string;
-  declare amount: number;
-  declare currency: string;
+  declare amount: object;
   declare project: string;
   declare projectID: string;
   declare uri: string;
@@ -29,8 +28,7 @@ Budget.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     planningId: { type: DataTypes.INTEGER },
     description: { type: DataTypes.STRING },
-    amount: { type: DataTypes.FLOAT },
-    currency: { type: DataTypes.STRING },
+    amount:{ type: DataTypes.JSON },
     project: { type: DataTypes.STRING },
     projectID: { type: DataTypes.STRING },
     uri: { type: DataTypes.STRING },
