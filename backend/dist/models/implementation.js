@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const cuestionariosConnection_1 = __importDefault(require("../database/cuestionariosConnection"));
 const transaction_1 = __importDefault(require("./transaction"));
+const Document_1 = __importDefault(require("./Document"));
+const Milestone_1 = __importDefault(require("./Milestone"));
 class Implementation extends sequelize_1.Model {
 }
 Implementation.init({
@@ -18,4 +20,6 @@ Implementation.init({
     tableName: 'Implementations',
 });
 Implementation.hasOne(transaction_1.default, { as: 'transactions', foreignKey: 'implementationId' });
+Implementation.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'documents' });
+Implementation.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'milestones' });
 exports.default = Implementation;

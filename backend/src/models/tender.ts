@@ -7,6 +7,8 @@ import {
 } from 'sequelize';
 import sequelize from '../database/cuestionariosConnection';
 import TenderItem from './tenderitem';
+import Document from './Document';
+import Milestone from './Milestone';
 
 class Tender extends Model<
   InferAttributes<Tender>,
@@ -55,5 +57,8 @@ Tender.init(
   }
 );
 Tender.hasOne(TenderItem, { as: 'items',  foreignKey: 'tenderId'})
+Tender.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'documents' });
+Tender.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'milestones' });
+
 
 export default Tender;

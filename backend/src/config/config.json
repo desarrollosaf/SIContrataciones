@@ -1,9 +1,9 @@
 {
   "development": {
-     "username": "usr_sicontrataciones",
-     "password": "4BPqX4HOF0CILk21SDLs",
-     "database": "adminplem_sicontrataciones",
-     "host": "192.168.36.53",
+     "username": "homestead",
+     "password": "secret",
+     "database": "contracts",
+     "host": "192.168.10.10",
      "dialect": "mysql"
   },
   "production": {

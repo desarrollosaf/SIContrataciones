@@ -13,6 +13,9 @@ import Contract from "../models/contract";
 import Implementation from "../models/implementation";
 import Transaction from "../models/transaction";
 import TenderItem from "../models/tenderitem";
+import Milestone from "../models/Milestone";
+import MilestoneDocument from "../models/MilestoneDocument";
+import DocumentModel from "../models/Document";
 
 
 export const getdatos = async (req: Request, res: Response): Promise<any> => {
@@ -27,32 +30,66 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
         { model: Publisher, as: 'publisher' },
         { model: Party, as: 'parties' },
         { model: Buyer, as: 'buyer' },
+
         { 
-          model: Planning, as: 'planning', 
-          include: [{ model: Budget, as: 'budget' }] 
-        },
-        { 
-          model: Tender, as: 'tender', 
-          include: [{ model: TenderItem, as: 'items' }] 
-        },
-        { 
-          model: Award, as: 'awards', 
-          include: [{ model: Supplier, as: 'suppliers' }] 
-        },
-        { 
-          model: Contract, as: 'contracts', 
+          model: Planning, as: 'planning',
           include: [
+            { model: Budget, as: 'budget' },
+            { model: DocumentModel , as: 'documents' },
             { 
-              model: Implementation, as: 'implementation',  
-              include: [{ model: Transaction, as: 'transactions' }] 
+              model: Milestone, as: 'milestones',
+              include: [{ model: MilestoneDocument, as: 'documents' }]
             }
-          ] 
+          ]
+        },
+
+        { 
+          model: Tender, as: 'tender',
+          include: [
+            { model: TenderItem, as: 'items' },
+            { model: DocumentModel , as: 'documents' },
+            { 
+              model: Milestone, as: 'milestones',
+              include: [{ model: MilestoneDocument, as: 'documents' }]
+            }
+          ]
+        },
+
+        { 
+          model: Award, as: 'awards',
+          include: [
+            { model: Supplier, as: 'suppliers' },
+            { model: DocumentModel, as: 'documents' }
+          ]
+        },
+
+        { 
+          model: Contract, as: 'contracts',
+          include: [
+            { model: DocumentModel, as: 'documents' },
+            { 
+              model: Milestone, as: 'milestones',
+              include: [{ model: MilestoneDocument, as: 'documents' }]
+            },
+            { 
+              model: Implementation, as: 'implementation',
+              include: [
+                { model: Transaction, as: 'transactions' },
+                { model: DocumentModel, as: 'documents' },
+                { 
+                  model: Milestone, as: 'milestones',
+                  include: [{ model: MilestoneDocument, as: 'documents' }]
+                }
+              ]
+            }
+          ]
         }
       ],
       limit: pageSize,
       offset: (page - 1) * pageSize,
       order: [['id', 'ASC']]
     });
+
     console.log(rows)
  
     const results = rows.map(r => {
@@ -66,7 +103,7 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
         date: release.date,
         tag: release.tag || ['planning'],
         initiationType: release.initiationType,
-        parties: release.parties || [],
+        parties: [release.parties || []],
         buyer: release.buyer || null,
         planning: release.planning 
           ? { ...release.planning, budget: release.planning.budget || null } 

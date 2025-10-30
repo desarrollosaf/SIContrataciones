@@ -19,7 +19,6 @@ module.exports = {
     }
     await queryInterface.bulkInsert('Releases', releases);
 
-    // insert related tables assuming release ids 1..10 (empty DB)
     const metadata = [];
     const publishers = [];
     const parties = [];
@@ -184,9 +183,71 @@ module.exports = {
     await queryInterface.bulkInsert('Contracts', contracts);
     await queryInterface.bulkInsert('Implementations', implementations);
     await queryInterface.bulkInsert('Transactions', transactions);
+
+    // === DOCUMENTS & MILESTONES ===
+    const documents = [];
+    const milestones = [];
+    const milestoneDocuments = [];
+
+    for (let i = 1; i <= 10; i++) {
+      const types = ['Planning', 'Tender', 'Award', 'Contract', 'Implementation'];
+      for (const t of types) {
+        documents.push({
+          parentType: t,
+          parentId: i,
+          documentType: t.toLowerCase() + 'Notice',
+          title: faker.lorem.words(3),
+          description: faker.lorem.sentence(),
+          url: faker.internet.url(),
+          datePublished: now,
+          dateModified: now,
+          format: 'pdf',
+          language: 'es',
+          createdAt: now,
+          updatedAt: now
+        });
+
+        milestones.push({
+          parentType: t,
+          parentId: i,
+          title: faker.lorem.words(2),
+          type: t.toLowerCase(),
+          description: faker.lorem.sentence(),
+          code: faker.string.alpha(5),
+          dueDate: now,
+          dateMet: now,
+          dateModified: now,
+          status: 'scheduled',
+          createdAt: now,
+          updatedAt: now
+        });
+      }
+
+      // Subdocument for milestone
+      milestoneDocuments.push({
+        milestoneId: i,
+        documentType: 'milestoneAttachment',
+        title: faker.lorem.words(2),
+        description: faker.lorem.sentence(),
+        url: faker.internet.url(),
+        datePublished: now,
+        dateModified: now,
+        format: 'pdf',
+        language: 'es',
+        createdAt: now,
+        updatedAt: now
+      });
+    }
+
+    await queryInterface.bulkInsert('documents', documents);
+    await queryInterface.bulkInsert('milestones', milestones);
+    await queryInterface.bulkInsert('milestoneDocuments', milestoneDocuments);
   },
 
   async down (queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('milestoneDocuments', null, {});
+    await queryInterface.bulkDelete('milestones', null, {});
+    await queryInterface.bulkDelete('documents', null, {});
     await queryInterface.bulkDelete('Transactions', null, {});
     await queryInterface.bulkDelete('Implementations', null, {});
     await queryInterface.bulkDelete('Contracts', null, {});

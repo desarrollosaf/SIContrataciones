@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const cuestionariosConnection_1 = __importDefault(require("../database/cuestionariosConnection"));
 const tenderitem_1 = __importDefault(require("./tenderitem"));
+const Document_1 = __importDefault(require("./Document"));
+const Milestone_1 = __importDefault(require("./Milestone"));
 class Tender extends sequelize_1.Model {
 }
 Tender.init({
@@ -30,4 +32,6 @@ Tender.init({
     tableName: 'Tenders',
 });
 Tender.hasOne(tenderitem_1.default, { as: 'items', foreignKey: 'tenderId' });
+Tender.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'documents' });
+Tender.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'milestones' });
 exports.default = Tender;

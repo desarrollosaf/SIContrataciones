@@ -7,6 +7,8 @@ import {
 } from 'sequelize';
 import sequelize from '../database/cuestionariosConnection';
 import Transaction from './transaction'; 
+import Document from './Document'; 
+import Milestone from './Milestone'; 
 
 
 class Implementation extends Model<
@@ -33,5 +35,8 @@ Implementation.init(
 );
 
 Implementation.hasOne(Transaction, {as: 'transactions', foreignKey: 'implementationId'})
+Implementation.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'documents' });
+Implementation.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'milestones' });
+
 
 export default Implementation;

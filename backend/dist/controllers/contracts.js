@@ -27,6 +27,9 @@ const contract_1 = __importDefault(require("../models/contract"));
 const implementation_1 = __importDefault(require("../models/implementation"));
 const transaction_1 = __importDefault(require("../models/transaction"));
 const tenderitem_1 = __importDefault(require("../models/tenderitem"));
+const Milestone_1 = __importDefault(require("../models/Milestone"));
+const MilestoneDocument_1 = __importDefault(require("../models/MilestoneDocument"));
+const Document_1 = __importDefault(require("../models/Document"));
 const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -40,22 +43,51 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 { model: buyer_1.default, as: 'buyer' },
                 {
                     model: planning_1.default, as: 'planning',
-                    include: [{ model: budget_1.default, as: 'budget' }]
+                    include: [
+                        { model: budget_1.default, as: 'budget' },
+                        { model: Document_1.default, as: 'documents' },
+                        {
+                            model: Milestone_1.default, as: 'milestones',
+                            include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
+                        }
+                    ]
                 },
                 {
                     model: tender_1.default, as: 'tender',
-                    include: [{ model: tenderitem_1.default, as: 'items' }]
+                    include: [
+                        { model: tenderitem_1.default, as: 'items' },
+                        { model: Document_1.default, as: 'documents' },
+                        {
+                            model: Milestone_1.default, as: 'milestones',
+                            include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
+                        }
+                    ]
                 },
                 {
                     model: award_1.default, as: 'awards',
-                    include: [{ model: supplier_1.default, as: 'suppliers' }]
+                    include: [
+                        { model: supplier_1.default, as: 'suppliers' },
+                        { model: Document_1.default, as: 'documents' }
+                    ]
                 },
                 {
                     model: contract_1.default, as: 'contracts',
                     include: [
+                        { model: Document_1.default, as: 'documents' },
+                        {
+                            model: Milestone_1.default, as: 'milestones',
+                            include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
+                        },
                         {
                             model: implementation_1.default, as: 'implementation',
-                            include: [{ model: transaction_1.default, as: 'transactions' }]
+                            include: [
+                                { model: transaction_1.default, as: 'transactions' },
+                                { model: Document_1.default, as: 'documents' },
+                                {
+                                    model: Milestone_1.default, as: 'milestones',
+                                    include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -76,7 +108,7 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 date: release.date,
                 tag: release.tag || ['planning'],
                 initiationType: release.initiationType,
-                parties: release.parties || [],
+                parties: [release.parties || []],
                 buyer: release.buyer || null,
                 planning: release.planning
                     ? Object.assign(Object.assign({}, release.planning), { budget: release.planning.budget || null }) : null,

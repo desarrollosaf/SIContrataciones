@@ -7,6 +7,9 @@ import {
 } from 'sequelize';
 import sequelize from '../database/cuestionariosConnection';
 import Supplier from './supplier';
+import Document from './Document';
+import Milestone from './Milestone';
+
 
 class Award extends Model<
   InferAttributes<Award>,
@@ -41,5 +44,8 @@ Award.init(
   }
 );
 Award.hasOne(Supplier, {as: 'suppliers', foreignKey: 'awardId'})
+Award.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'documents' });
+Award.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'milestones' });
+
 
 export default Award;

@@ -7,6 +7,8 @@ import {
 } from 'sequelize';
 import sequelize from '../database/cuestionariosConnection';
 import Budget from './budget';
+import Document from './Document';
+import Milestone from './Milestone';
 
 class Planning extends Model<
   InferAttributes<Planning>,
@@ -33,5 +35,8 @@ Planning.init(
   }
 );
 Planning.hasOne(Budget, { as: 'budget', foreignKey: 'planningId' });
+Planning.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Planning' }, as: 'documents' });
+Planning.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Planning' }, as: 'milestones' });
+
 
 export default Planning;
