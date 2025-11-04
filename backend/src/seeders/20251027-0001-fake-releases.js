@@ -166,7 +166,7 @@ module.exports = {
       tenderItems.push({
         tenderId: i,
         description: faker.commerce.productDescription(),
-        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
+        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
         additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
         quantity: faker.number.int({ min:1, max:100 }),
         unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
@@ -227,6 +227,7 @@ module.exports = {
         awardId: i,
         name: faker.company.name(),
         identifier: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
+        additionalIdentifiers: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
         address: JSON.stringify({ streetAddress: faker.location.streetAddress(), locality: faker.location.city(), region: faker.location.state(), postalCode: faker.location.zipCode(), countryName: faker.location.country() }),
         contactPoint: JSON.stringify({ name: faker.person.fullName(), email: faker.internet.email(), telephone: faker.phone.number(), faxNumber: '', url: faker.internet.url() }),
         createdAt: now,
@@ -236,7 +237,7 @@ module.exports = {
       awardsItems.push({
         awardId: i,
         description: faker.commerce.productDescription(),
-        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
+        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
         additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
         quantity: faker.number.int({ min:1, max:100 }),
         unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
@@ -252,6 +253,16 @@ module.exports = {
         status: 'pending',
         period: JSON.stringify({ startDate: new Date(), endDate: new Date(), durationInDays: 30 }),
         value: JSON.stringify({ amount: faker.number.float({min:10000, max:500000}), currency: 'MXN' }),
+        relatedProcesses: JSON.stringify([
+          {
+            id: faker.string.uuid(),
+            relationship: [faker.helpers.arrayElement(['framework', 'parent', 'preceding', 'subcontract'])],
+            title: faker.lorem.sentence(3),
+            scheme: 'ocid',
+            identifier: faker.string.alphanumeric(10),
+            uri: faker.internet.url()
+          }
+        ]),
         dateSigned: faker.date.recent(),
         createdAt: now,
         updatedAt: now
@@ -266,9 +277,74 @@ module.exports = {
         source: 'system',
         date: faker.date.recent(),
         value: JSON.stringify({ amount: faker.number.float({min:1000, max:50000}), currency: 'MXN' }),
-        payer: JSON.stringify({ name: faker.company.name() }),
-        payee: JSON.stringify({ name: faker.company.name() }),
+        payer: JSON.stringify({
+          name: faker.company.name(),
+          id: faker.string.uuid(),
+          identifier: {
+            scheme: faker.helpers.arrayElement(['RFC', 'NIT', 'VAT', 'RUC']),
+            id: faker.string.alphanumeric(10),
+            legalName: faker.company.name(),
+            uri: faker.internet.url()
+          },
+          additionalIdentifiers: [
+            {
+              scheme: faker.helpers.arrayElement(['RFC', 'NIT', 'VAT', 'RUC']),
+              id: faker.string.alphanumeric(10),
+              legalName: faker.company.name(),
+              uri: faker.internet.url()
+            }
+          ],
+          address: {
+            streetAddress: faker.location.streetAddress(),
+            locality: faker.location.city(),
+            region: faker.location.state(),
+            postalCode: faker.location.zipCode(),
+            countryName: faker.location.country()
+          },
+          contactPoint: {
+            name: faker.person.fullName(),
+            email: faker.internet.email(),
+            telephone: faker.phone.number(),
+            faxNumber: faker.phone.number(),
+            url: faker.internet.url()
+          }
+        }),
+        payee: JSON.stringify({
+          name: faker.company.name(),
+          id: faker.string.uuid(),
+          identifier: {
+            scheme: faker.helpers.arrayElement(['RFC', 'NIT', 'VAT', 'RUC']),
+            id: faker.string.alphanumeric(10),
+            legalName: faker.company.name(),
+            uri: faker.internet.url()
+          },
+          additionalIdentifiers: [
+            {
+              scheme: faker.helpers.arrayElement(['RFC', 'NIT', 'VAT', 'RUC']),
+              id: faker.string.alphanumeric(10),
+              legalName: faker.company.name(),
+              uri: faker.internet.url()
+            }
+          ],
+          address: {
+            streetAddress: faker.location.streetAddress(),
+            locality: faker.location.city(),
+            region: faker.location.state(),
+            postalCode: faker.location.zipCode(),
+            countryName: faker.location.country()
+          },
+          contactPoint: {
+            name: faker.person.fullName(),
+            email: faker.internet.email(),
+            telephone: faker.phone.number(),
+            faxNumber: faker.phone.number(),
+            url: faker.internet.url()
+          }
+        }),
         uri: faker.internet.url(),
+        amount: JSON.stringify({ amount: faker.number.int({min:1,max:100}), currency: 'MXN' }),
+        providerOrganization: JSON.stringify({ scheme: 'CPV', id: 'ID', legalName: 'Descripción', uri: 'https://' }),
+        receiverOrganization: JSON.stringify({ scheme: 'CPV', id: 'ID', legalName: 'Descripción', uri: 'https://' }),
         createdAt: now,
         updatedAt: now
       });
@@ -382,16 +458,16 @@ module.exports = {
       });
     }
 
-    await queryInterface.bulkInsert('documents', documents);
-    await queryInterface.bulkInsert('milestones', milestones);
-    await queryInterface.bulkInsert('milestoneDocuments', milestoneDocuments);
+    await queryInterface.bulkInsert('Documents', documents);
+    await queryInterface.bulkInsert('Milestones', milestones);
+    await queryInterface.bulkInsert('MilestoneDocuments', milestoneDocuments);
     await queryInterface.bulkInsert('Amendments', amendments);
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('milestoneDocuments', null, {});
-    await queryInterface.bulkDelete('milestones', null, {});
-    await queryInterface.bulkDelete('documents', null, {});
+    await queryInterface.bulkDelete('MilestoneDocuments', null, {});
+    await queryInterface.bulkDelete('Milestones', null, {});
+    await queryInterface.bulkDelete('Documents', null, {});
     await queryInterface.bulkDelete('Transactions', null, {});
     await queryInterface.bulkDelete('Implementations', null, {});
     await queryInterface.bulkDelete('Contracts', null, {});

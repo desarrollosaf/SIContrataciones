@@ -19,7 +19,7 @@ Implementation.init({
     sequelize: cuestionariosConnection_1.default,
     tableName: 'Implementations',
 });
-Implementation.hasOne(transaction_1.default, { as: 'transactions', foreignKey: 'implementationId' });
+Implementation.hasMany(transaction_1.default, { as: 'transactions', foreignKey: 'implementationId' });
 Implementation.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'documents' });
 Implementation.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'milestones' });
 exports.default = Implementation;

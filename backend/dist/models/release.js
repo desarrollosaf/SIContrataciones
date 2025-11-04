@@ -38,7 +38,7 @@ Release.hasOne(publisher_1.default, { as: 'publisher', foreignKey: 'releaseId' }
 Release.hasOne(party_1.default, { as: 'parties', foreignKey: 'releaseId' });
 Release.hasOne(planning_1.default, { as: 'planning', foreignKey: 'releaseId' });
 Release.hasOne(tender_1.default, { as: 'tender', foreignKey: 'releaseId' });
-Release.hasOne(award_1.default, { as: 'awards', foreignKey: 'releaseId' });
+Release.hasMany(award_1.default, { as: 'awards', foreignKey: 'releaseId' });
 Release.hasOne(contract_1.default, { as: 'contracts', foreignKey: 'releaseId' });
 Release.hasOne(buyer_1.default, { as: 'buyer', foreignKey: 'releaseId' });
 exports.default = Release;

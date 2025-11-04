@@ -19,6 +19,7 @@ import DocumentModel from "../models/Document";
 import Tenderer from "../models/tenders";
 import Amendment from "../models/amendments";
 import AwardsItem from "../models/awarditem";
+import ContractItem from "../models/contractsitem";
 
 export const getdatos = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -74,9 +75,20 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
           model: Award, as: 'awards',
           include: [
             { model: Supplier, as: 'suppliers' },
-            { model: AwardsItem, as: 'awardsitem' },
-            { model: DocumentModel, as: 'documents' }
-            
+            { model: AwardsItem, as: 'items' },
+            { model: DocumentModel, as: 'documents' },
+            { 
+              model: Amendment, 
+              as: 'amendments',
+              where: { isCurrent: 0 },
+              required: false 
+            },
+            { 
+              model: Amendment, 
+              as: 'amendment',
+              where: { isCurrent: 1 },
+              required: false
+            },
           ]
         },
 
@@ -84,6 +96,7 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
           model: Contract, as: 'contracts',
           include: [
             { model: DocumentModel, as: 'documents' },
+            { model: ContractItem, as: 'items' },
             { 
               model: Milestone, as: 'milestones',
               include: [{ model: MilestoneDocument, as: 'documents' }]
@@ -98,7 +111,19 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
                   include: [{ model: MilestoneDocument, as: 'documents' }]
                 }
               ]
-            }
+            },
+            { 
+              model: Amendment, 
+              as: 'amendments',
+              where: { isCurrent: 0 },
+              required: false 
+            },
+            { 
+              model: Amendment, 
+              as: 'amendment',
+              where: { isCurrent: 1 },
+              required: false
+            },
           ]
         }
       ],

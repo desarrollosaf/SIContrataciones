@@ -43,7 +43,7 @@ Tender.init({
     sequelize: cuestionariosConnection_1.default,
     tableName: 'Tenders',
 });
-Tender.hasOne(tenderitem_1.default, { as: 'items', foreignKey: 'tenderId' });
+Tender.hasMany(tenderitem_1.default, { as: 'items', foreignKey: 'tenderId' });
 Tender.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'documents' });
 Tender.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'milestones' });
 Tender.hasMany(amendments_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'amendments' });

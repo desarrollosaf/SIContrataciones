@@ -16,6 +16,9 @@ Transaction.init({
     payer: { type: sequelize_1.DataTypes.JSON },
     payee: { type: sequelize_1.DataTypes.JSON },
     uri: { type: sequelize_1.DataTypes.STRING },
+    amount: { type: sequelize_1.DataTypes.JSON },
+    providerOrganization: { type: sequelize_1.DataTypes.JSON },
+    receiverOrganization: { type: sequelize_1.DataTypes.JSON },
     createdAt: { type: sequelize_1.DataTypes.DATE, defaultValue: sequelize_1.DataTypes.NOW },
     updatedAt: { type: sequelize_1.DataTypes.DATE, defaultValue: sequelize_1.DataTypes.NOW },
 }, {

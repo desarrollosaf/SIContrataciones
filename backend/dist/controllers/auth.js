@@ -17,7 +17,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { client_id, client_secret } = req.body;
     if (client_id === 'cliente_externo' && client_secret === 'super_secreto') {
-        const token = jsonwebtoken_1.default.sign({ client_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jsonwebtoken_1.default.sign({ client_id }, process.env.JWT_SECRET, { expiresIn: '3h' });
         return res.json({
             access_token: token,
             token_type: 'Bearer',

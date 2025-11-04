@@ -9,6 +9,7 @@ const supplier_1 = __importDefault(require("./supplier"));
 const Document_1 = __importDefault(require("./Document"));
 const Milestone_1 = __importDefault(require("./Milestone"));
 const awarditem_1 = __importDefault(require("./awarditem"));
+const amendments_1 = __importDefault(require("./amendments"));
 class Award extends sequelize_1.Model {
 }
 Award.init({
@@ -18,6 +19,7 @@ Award.init({
     description: { type: sequelize_1.DataTypes.TEXT },
     status: { type: sequelize_1.DataTypes.STRING },
     date: { type: sequelize_1.DataTypes.DATE },
+    contractPeriod: { type: sequelize_1.DataTypes.JSON },
     value: { type: sequelize_1.DataTypes.JSON },
     createdAt: { type: sequelize_1.DataTypes.DATE, defaultValue: sequelize_1.DataTypes.NOW },
     updatedAt: { type: sequelize_1.DataTypes.DATE, defaultValue: sequelize_1.DataTypes.NOW },
@@ -25,8 +27,10 @@ Award.init({
     sequelize: cuestionariosConnection_1.default,
     tableName: 'Awards',
 });
-Award.hasOne(supplier_1.default, { as: 'suppliers', foreignKey: 'awardId' });
+Award.hasMany(supplier_1.default, { as: 'suppliers', foreignKey: 'awardId' });
 Award.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'documents' });
 Award.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'milestones' });
-Award.hasOne(awarditem_1.default, { as: 'awardsitem', foreignKey: 'awardId' });
+Award.hasMany(awarditem_1.default, { as: 'items', foreignKey: 'awardId' });
+Award.hasMany(amendments_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'amendments' });
+Award.hasOne(amendments_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'amendment' });
 exports.default = Award;

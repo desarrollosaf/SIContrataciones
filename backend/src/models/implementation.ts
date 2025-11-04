@@ -34,7 +34,7 @@ Implementation.init(
   }
 );
 
-Implementation.hasOne(Transaction, {as: 'transactions', foreignKey: 'implementationId'})
+Implementation.hasMany(Transaction, {as: 'transactions', foreignKey: 'implementationId'})
 Implementation.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'documents' });
 Implementation.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Implementation' }, as: 'milestones' });
 

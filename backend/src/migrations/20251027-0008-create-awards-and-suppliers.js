@@ -18,6 +18,7 @@ module.exports = {
       awardId: { type: Sequelize.INTEGER },
       name: { type: Sequelize.STRING },
       identifier: { type: Sequelize.JSON },
+      additionalIdentifiers: { type: Sequelize.JSON },
       address: { type: Sequelize.JSON },
       contactPoint: { type: Sequelize.JSON },
       createdAt: { allowNull: false, type: Sequelize.DATE },

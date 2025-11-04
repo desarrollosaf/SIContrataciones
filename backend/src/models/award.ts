@@ -10,6 +10,7 @@ import Supplier from './supplier';
 import Document from './Document';
 import Milestone from './Milestone';
 import AwardsItem from './awarditem';
+import Amendment from './amendments';
 
 
 class Award extends Model<
@@ -22,6 +23,7 @@ class Award extends Model<
   declare description: string;
   declare status: string;
   declare date: Date;
+  declare contractPeriod: object;
   declare value: object;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -35,6 +37,7 @@ Award.init(
     description: { type: DataTypes.TEXT },
     status: { type: DataTypes.STRING },
     date: { type: DataTypes.DATE },
+    contractPeriod: { type: DataTypes.JSON },
     value: { type: DataTypes.JSON },
     createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updatedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
@@ -44,9 +47,11 @@ Award.init(
     tableName: 'Awards',
   }
 );
-Award.hasOne(Supplier, {as: 'suppliers', foreignKey: 'awardId'})
+Award.hasMany(Supplier, {as: 'suppliers', foreignKey: 'awardId'})
 Award.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'documents' });
 Award.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'milestones' });
-Award.hasOne(AwardsItem, {as: 'awardsitem', foreignKey: 'awardId'})
+Award.hasMany(AwardsItem, {as: 'items', foreignKey: 'awardId'})
+Award.hasMany(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'amendments' });
+Award.hasOne(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'amendment' });
 
 export default Award;

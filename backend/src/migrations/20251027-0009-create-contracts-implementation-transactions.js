@@ -10,6 +10,7 @@ module.exports = {
       status: { type: Sequelize.STRING },
       period: { type: Sequelize.JSON },
       value: { type: Sequelize.JSON },
+      relatedProcesses: { type: Sequelize.JSON },
       dateSigned: { type: Sequelize.DATE },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE }
@@ -29,6 +30,9 @@ module.exports = {
       payer: { type: Sequelize.JSON },
       payee: { type: Sequelize.JSON },
       uri: { type: Sequelize.STRING },
+      amount: { type: Sequelize.JSON },
+      providerOrganization: { type: Sequelize.JSON },
+      receiverOrganization: { type: Sequelize.JSON },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE }
     });

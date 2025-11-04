@@ -78,7 +78,7 @@ Tender.init(
     tableName: 'Tenders',
   }
 );
-Tender.hasOne(TenderItem, { as: 'items',  foreignKey: 'tenderId'})
+Tender.hasMany(TenderItem, { as: 'items',  foreignKey: 'tenderId'})
 Tender.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'documents' });
 Tender.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'milestones' });
 Tender.hasMany(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Tender' }, as: 'amendments' });

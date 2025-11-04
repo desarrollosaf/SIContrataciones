@@ -10,6 +10,7 @@ import Implementation from './implementation';
 import Document from './Document';
 import Milestone from './Milestone';
 import Amendment from './amendments';
+import ContractItem from './contractsitem';
 
 class Contract extends Model<
   InferAttributes<Contract>,
@@ -23,6 +24,7 @@ class Contract extends Model<
   declare status: string;
   declare period: object;
   declare value: object;
+  declare relatedProcesses: object;
   declare dateSigned: Date;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -39,6 +41,7 @@ Contract.init(
     period: { type: DataTypes.JSON },
     value: { type: DataTypes.JSON },
     dateSigned: { type: DataTypes.DATE },
+    relatedProcesses: { type: DataTypes.JSON },
     createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updatedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },
@@ -51,6 +54,8 @@ Contract.init(
 Contract.hasOne(Implementation, {as: 'implementation', foreignKey: 'contractId'});
 Contract.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'documents' });
 Contract.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'milestones' });
-Contract.hasMany(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'amendment' });
+Contract.hasMany(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'amendments' });
+Contract.hasOne(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'amendment' });
+Contract.hasMany(ContractItem, { foreignKey: 'contractId', as: 'items' });
 
 export default Contract;

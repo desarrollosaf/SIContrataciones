@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const cuestionariosConnection_1 = __importDefault(require("../database/cuestionariosConnection"));
-const contract_1 = __importDefault(require("./contract")); // asegúrate de tener este modelo creado
 class ContractItem extends sequelize_1.Model {
 }
 ContractItem.init({
@@ -41,6 +40,4 @@ ContractItem.init({
     modelName: 'ContractItem',
     timestamps: true,
 });
-contract_1.default.hasMany(ContractItem, { foreignKey: 'contractId', as: 'items' });
-ContractItem.belongsTo(contract_1.default, { foreignKey: 'contractId', as: 'contract' });
 exports.default = ContractItem;

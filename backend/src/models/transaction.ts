@@ -19,6 +19,9 @@ class Transaction extends Model<
   declare payer: object;
   declare payee: object;
   declare uri: string;
+  declare amount: object;
+  declare providerOrganization: object;
+  declare receiverOrganization: object;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -33,6 +36,9 @@ Transaction.init(
     payer: { type: DataTypes.JSON },
     payee: { type: DataTypes.JSON },
     uri: { type: DataTypes.STRING },
+    amount: { type: DataTypes.JSON },
+    providerOrganization: { type: DataTypes.JSON },
+    receiverOrganization: { type: DataTypes.JSON },
     createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
     updatedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },

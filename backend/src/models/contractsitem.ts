@@ -62,7 +62,4 @@ ContractItem.init(
 );
 
 
-Contract.hasMany(ContractItem, { foreignKey: 'contractId', as: 'items' });
-ContractItem.belongsTo(Contract, { foreignKey: 'contractId', as: 'contract' });
-
 export default ContractItem;

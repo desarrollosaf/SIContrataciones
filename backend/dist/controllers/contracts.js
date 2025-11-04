@@ -33,6 +33,7 @@ const Document_1 = __importDefault(require("../models/Document"));
 const tenders_1 = __importDefault(require("../models/tenders"));
 const amendments_1 = __importDefault(require("../models/amendments"));
 const awarditem_1 = __importDefault(require("../models/awarditem"));
+const contractsitem_1 = __importDefault(require("../models/contractsitem"));
 const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -83,14 +84,27 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     model: award_1.default, as: 'awards',
                     include: [
                         { model: supplier_1.default, as: 'suppliers' },
-                        { model: awarditem_1.default, as: 'awardsitem' },
-                        { model: Document_1.default, as: 'documents' }
+                        { model: awarditem_1.default, as: 'items' },
+                        { model: Document_1.default, as: 'documents' },
+                        {
+                            model: amendments_1.default,
+                            as: 'amendments',
+                            where: { isCurrent: 0 },
+                            required: false
+                        },
+                        {
+                            model: amendments_1.default,
+                            as: 'amendment',
+                            where: { isCurrent: 1 },
+                            required: false
+                        },
                     ]
                 },
                 {
                     model: contract_1.default, as: 'contracts',
                     include: [
                         { model: Document_1.default, as: 'documents' },
+                        { model: contractsitem_1.default, as: 'items' },
                         {
                             model: Milestone_1.default, as: 'milestones',
                             include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
@@ -105,7 +119,19 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                                     include: [{ model: MilestoneDocument_1.default, as: 'documents' }]
                                 }
                             ]
-                        }
+                        },
+                        {
+                            model: amendments_1.default,
+                            as: 'amendments',
+                            where: { isCurrent: 0 },
+                            required: false
+                        },
+                        {
+                            model: amendments_1.default,
+                            as: 'amendment',
+                            where: { isCurrent: 1 },
+                            required: false
+                        },
                     ]
                 }
             ],
