@@ -4,6 +4,7 @@
      "password": "dMhqFn5t46Dx75ZTQOSa",
      "database": "adminplem_contrataciones",
      "host": "192.168.36.54",
+     "port": "3307",
      "dialect": "mysql"
   },
   "production": {
