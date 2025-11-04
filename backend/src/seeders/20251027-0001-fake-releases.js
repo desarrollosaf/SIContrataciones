@@ -34,6 +34,8 @@ module.exports = {
     const contracts = [];
     const implementations = [];
     const transactions = [];
+    const awardsItems = [];
+    const contractsItems = [];
 
     for (let i=1;i<=10;i++){
       metadata.push({
@@ -215,10 +217,12 @@ module.exports = {
         description: faker.lorem.sentence(),
         status: 'pending',
         date: faker.date.past(),
+        contractPeriod: JSON.stringify({ startDate: new Date(), endDate: new Date(),  maxExtentDate: new Date(), durationInDays: 10 }),
         value: JSON.stringify({ amount: faker.number.float({min:10000, max:500000}), currency: 'MXN' }),
         createdAt: now,
         updatedAt: now
       });
+      
       suppliers.push({
         awardId: i,
         name: faker.company.name(),
@@ -228,6 +232,18 @@ module.exports = {
         createdAt: now,
         updatedAt: now
       });
+
+      awardsItems.push({
+        awardId: i,
+        description: faker.commerce.productDescription(),
+        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
+        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
+        quantity: faker.number.int({ min:1, max:100 }),
+        unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
+        createdAt: now,
+        updatedAt: now
+      });
+
       contracts.push({
         releaseId: i,
         awardId: i,
@@ -256,6 +272,16 @@ module.exports = {
         createdAt: now,
         updatedAt: now
       });
+      contractsItems.push({
+        contractId: i,
+        description: faker.commerce.productDescription(),
+        classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
+        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
+        quantity: faker.number.int({ min:1, max:100 }),
+        unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
+        createdAt: now,
+        updatedAt: now
+      });
     }
 
     await queryInterface.bulkInsert('Metadata', metadata);
@@ -268,10 +294,12 @@ module.exports = {
     await queryInterface.bulkInsert('TenderItems', tenderItems);
     await queryInterface.bulkInsert('Tenderers', tenderers);
     await queryInterface.bulkInsert('Awards', awards);
+    await queryInterface.bulkInsert('AwardsItems', awardsItems);
     await queryInterface.bulkInsert('Suppliers', suppliers);
     await queryInterface.bulkInsert('Contracts', contracts);
     await queryInterface.bulkInsert('Implementations', implementations);
     await queryInterface.bulkInsert('Transactions', transactions);
+    await queryInterface.bulkInsert('ContractsItems', contractsItems);
 
     // === DOCUMENTS & MILESTONES ===
     const documents = [];

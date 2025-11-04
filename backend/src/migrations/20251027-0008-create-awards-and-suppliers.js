@@ -8,6 +8,7 @@ module.exports = {
       description: { type: Sequelize.TEXT },
       status: { type: Sequelize.STRING },
       date: { type: Sequelize.DATE },
+      contractPeriod: { type: Sequelize.JSON },
       value: { type: Sequelize.JSON },
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE }
@@ -22,7 +23,7 @@ module.exports = {
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE }
     });
-     await queryInterface.createTable('AwardsItems', {
+    await queryInterface.createTable('AwardsItems', {
       id: { allowNull: false, autoIncrement: true, primaryKey: true, type: Sequelize.INTEGER },
       awardId: { type: Sequelize.INTEGER },
       description: { type: Sequelize.TEXT },
@@ -36,6 +37,7 @@ module.exports = {
   },
   async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('Suppliers');
+    await queryInterface.dropTable('AwardsItems');
     await queryInterface.dropTable('Awards');
   }
 };

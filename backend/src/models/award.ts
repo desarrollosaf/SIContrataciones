@@ -9,6 +9,7 @@ import sequelize from '../database/cuestionariosConnection';
 import Supplier from './supplier';
 import Document from './Document';
 import Milestone from './Milestone';
+import AwardsItem from './awarditem';
 
 
 class Award extends Model<
@@ -46,6 +47,6 @@ Award.init(
 Award.hasOne(Supplier, {as: 'suppliers', foreignKey: 'awardId'})
 Award.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'documents' });
 Award.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'milestones' });
-
+Award.hasOne(AwardsItem, {as: 'awardsitem', foreignKey: 'awardId'})
 
 export default Award;

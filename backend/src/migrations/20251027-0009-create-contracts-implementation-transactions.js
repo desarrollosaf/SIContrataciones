@@ -32,10 +32,23 @@ module.exports = {
       createdAt: { allowNull: false, type: Sequelize.DATE },
       updatedAt: { allowNull: false, type: Sequelize.DATE }
     });
+
+    await queryInterface.createTable('ContractsItems', {
+      id: { allowNull: false, autoIncrement: true, primaryKey: true, type: Sequelize.INTEGER },
+      contractId: { type: Sequelize.INTEGER },
+      description: { type: Sequelize.TEXT },
+      classification: { type: Sequelize.JSON },
+      additionalClassifications: { type: Sequelize.JSON },
+      quantity: { type: Sequelize.INTEGER },
+      unit: { type: Sequelize.JSON },
+      createdAt: { allowNull: false, type: Sequelize.DATE },
+      updatedAt: { allowNull: false, type: Sequelize.DATE }
+    });
   },
   async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('Transactions');
     await queryInterface.dropTable('Implementations');
+    await queryInterface.dropTable('ContractsItems');
     await queryInterface.dropTable('Contracts');
   }
 };

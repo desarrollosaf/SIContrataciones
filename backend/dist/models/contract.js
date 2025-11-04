@@ -8,6 +8,7 @@ const cuestionariosConnection_1 = __importDefault(require("../database/cuestiona
 const implementation_1 = __importDefault(require("./implementation"));
 const Document_1 = __importDefault(require("./Document"));
 const Milestone_1 = __importDefault(require("./Milestone"));
+const amendments_1 = __importDefault(require("./amendments"));
 class Contract extends sequelize_1.Model {
 }
 Contract.init({
@@ -29,4 +30,5 @@ Contract.init({
 Contract.hasOne(implementation_1.default, { as: 'implementation', foreignKey: 'contractId' });
 Contract.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'documents' });
 Contract.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'milestones' });
+Contract.hasMany(amendments_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'amendment' });
 exports.default = Contract;

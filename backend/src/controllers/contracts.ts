@@ -16,7 +16,9 @@ import TenderItem from "../models/tenderitem";
 import Milestone from "../models/Milestone";
 import MilestoneDocument from "../models/MilestoneDocument";
 import DocumentModel from "../models/Document";
-
+import Tenderer from "../models/tenders";
+import Amendment from "../models/amendments";
+import AwardsItem from "../models/awarditem";
 
 export const getdatos = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -47,11 +49,24 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
           model: Tender, as: 'tender',
           include: [
             { model: TenderItem, as: 'items' },
+            { model: Tenderer, as: 'tenderers' },
             { model: DocumentModel , as: 'documents' },
+            { 
+              model: Amendment, 
+              as: 'amendments',
+              where: { isCurrent: 0 },
+              required: false 
+            },
+            { 
+              model: Amendment, 
+              as: 'amendment',
+              where: { isCurrent: 1 },
+              required: false
+            },
             { 
               model: Milestone, as: 'milestones',
               include: [{ model: MilestoneDocument, as: 'documents' }]
-            }
+            },
           ]
         },
 
@@ -59,7 +74,9 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
           model: Award, as: 'awards',
           include: [
             { model: Supplier, as: 'suppliers' },
+            { model: AwardsItem, as: 'awardsitem' },
             { model: DocumentModel, as: 'documents' }
+            
           ]
         },
 

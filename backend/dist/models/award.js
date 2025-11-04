@@ -8,6 +8,7 @@ const cuestionariosConnection_1 = __importDefault(require("../database/cuestiona
 const supplier_1 = __importDefault(require("./supplier"));
 const Document_1 = __importDefault(require("./Document"));
 const Milestone_1 = __importDefault(require("./Milestone"));
+const awarditem_1 = __importDefault(require("./awarditem"));
 class Award extends sequelize_1.Model {
 }
 Award.init({
@@ -27,4 +28,5 @@ Award.init({
 Award.hasOne(supplier_1.default, { as: 'suppliers', foreignKey: 'awardId' });
 Award.hasMany(Document_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'documents' });
 Award.hasMany(Milestone_1.default, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Award' }, as: 'milestones' });
+Award.hasOne(awarditem_1.default, { as: 'awardsitem', foreignKey: 'awardId' });
 exports.default = Award;

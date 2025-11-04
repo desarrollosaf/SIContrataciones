@@ -9,6 +9,7 @@ import sequelize from '../database/cuestionariosConnection';
 import Implementation from './implementation';
 import Document from './Document';
 import Milestone from './Milestone';
+import Amendment from './amendments';
 
 class Contract extends Model<
   InferAttributes<Contract>,
@@ -50,6 +51,6 @@ Contract.init(
 Contract.hasOne(Implementation, {as: 'implementation', foreignKey: 'contractId'});
 Contract.hasMany(Document, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'documents' });
 Contract.hasMany(Milestone, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'milestones' });
-
+Contract.hasMany(Amendment, { foreignKey: 'parentId', constraints: false, scope: { parentType: 'Contract' }, as: 'amendment' });
 
 export default Contract;
