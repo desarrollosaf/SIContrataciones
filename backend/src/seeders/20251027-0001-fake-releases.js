@@ -61,7 +61,14 @@ module.exports = {
         name: faker.company.name(),
         partyId: faker.string.uuid(),
         identifier: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
-        additionalIdentifiers: JSON.stringify([]),
+        additionalIdentifiers: JSON.stringify([
+          {
+            scheme: 'CURP',
+            id: faker.string.alphanumeric(10),
+            legalName: faker.company.name(),
+            uri: faker.internet.url(),
+          }
+        ]),
         address: JSON.stringify({ streetAddress: faker.location.streetAddress(), locality: faker.location.city(), region: faker.location.state(), postalCode: faker.location.zipCode(), countryName: faker.location.country() }),
         contactPoint: JSON.stringify({ name: faker.person.fullName(), email: faker.internet.email(), telephone: faker.phone.number(), faxNumber: '', url: faker.internet.url() }),
         roles: JSON.stringify(['buyer']),
@@ -74,7 +81,14 @@ module.exports = {
         name: faker.company.name(),
         idOrg: faker.string.uuid(),
         identifier: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
-        additionalIdentifiers: JSON.stringify([]),
+        additionalIdentifiers: JSON.stringify([
+          {
+            scheme: 'CURP',
+            id: faker.string.alphanumeric(10),
+            legalName: faker.company.name(),
+            uri: faker.internet.url(),
+          }
+        ]),
         address: JSON.stringify({ streetAddress: faker.location.streetAddress(), locality: faker.location.city(), region: faker.location.state(), postalCode: faker.location.zipCode(), countryName: faker.location.country() }),
         contactPoint: JSON.stringify({ name: faker.person.fullName(), email: faker.internet.email(), telephone: faker.phone.number(), faxNumber: '', url: faker.internet.url() }),
         createdAt: now,
