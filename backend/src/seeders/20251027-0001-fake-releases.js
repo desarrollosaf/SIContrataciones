@@ -181,7 +181,7 @@ module.exports = {
         tenderId: i,
         description: faker.commerce.productDescription(),
         classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
-        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
+        additionalClassifications: JSON.stringify([{ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }]),
         quantity: faker.number.int({ min:1, max:100 }),
         unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
         createdAt: now,
@@ -241,7 +241,7 @@ module.exports = {
         awardId: i,
         name: faker.company.name(),
         identifier: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
-        additionalIdentifiers: JSON.stringify({ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }),
+        additionalIdentifiers: JSON.stringify([{ scheme: 'ID', id: faker.string.uuid(), legalName: faker.company.name(), uri: faker.internet.url() }]),
         address: JSON.stringify({ streetAddress: faker.location.streetAddress(), locality: faker.location.city(), region: faker.location.state(), postalCode: faker.location.zipCode(), countryName: faker.location.country() }),
         contactPoint: JSON.stringify({ name: faker.person.fullName(), email: faker.internet.email(), telephone: faker.phone.number(), faxNumber: '', url: faker.internet.url() }),
         createdAt: now,
@@ -252,7 +252,7 @@ module.exports = {
         awardId: i,
         description: faker.commerce.productDescription(),
         classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
-        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
+        additionalClassifications: JSON.stringify([{ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }]),
         quantity: faker.number.int({ min:1, max:100 }),
         unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
         createdAt: now,
@@ -366,7 +366,7 @@ module.exports = {
         contractId: i,
         description: faker.commerce.productDescription(),
         classification: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción' }),
-        additionalClassifications: JSON.stringify({ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }),
+        additionalClassifications: JSON.stringify([{ scheme: 'CPV', id: 'ID', description: 'Descripción', uri: 'https://' }]),
         quantity: faker.number.int({ min:1, max:100 }),
         unit: JSON.stringify({ scheme: 'UNCEFACT', id: 'ID', name: 'unit', value: { amount: faker.number.int({min:1,max:100}), currency: 'MXN' }, uri: 'https://' }),
         createdAt: now,
@@ -410,10 +410,10 @@ module.exports = {
           amendsReleaseID: faker.string.alphanumeric(8),
           releaseID: faker.string.alphanumeric(8),
           date: faker.date.recent(),
-          changes:JSON.stringify({ 
+          changes:JSON.stringify([{ 
               property: 'someProperty',
               former_value: faker.commerce.productName()
-          }),
+          }]),
           isCurrent: 0, 
           createdAt: now,
           updatedAt: now
