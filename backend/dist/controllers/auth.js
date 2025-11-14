@@ -29,13 +29,13 @@ const generateToken = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             message: 'Credenciales inválidas'
         });
     }
-    const token = jsonwebtoken_1.default.sign({ client_id, scope }, process.env.JWT_SECRET, { expiresIn: '3h' });
+    const token = jsonwebtoken_1.default.sign({ client_id, scope }, process.env.JWT_SECRET, { expiresIn: 300 });
     return res.json({
         access_token: token,
         token_type: 'Bearer',
-        expires_in: 10800,
+        expires_in: 300,
         scope: 'read',
-        refresh_token: 10800
+        refresh_token: 300
     });
 });
 exports.generateToken = generateToken;

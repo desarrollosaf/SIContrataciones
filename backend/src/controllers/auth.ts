@@ -26,15 +26,15 @@ export const generateToken = async (req: Request, res: Response): Promise<any> =
     const token = jwt.sign(
         { client_id, scope },
         process.env.JWT_SECRET!,
-        { expiresIn: '3h' }
+        { expiresIn: 300 }
     );
 
     return res.json({
         access_token: token,
         token_type: 'Bearer',
-        expires_in: 10800,
+        expires_in: 300,
         scope: 'read',
-        refresh_token: 10800 
+        refresh_token: 300 
     });
 };
 /*export const generateToken = async (req: Request, res: Response): Promise<any> => {

@@ -21,11 +21,34 @@ import Amendment from "../models/amendments";
 import AwardsItem from "../models/awarditem";
 import ContractItem from "../models/contractsitem";
 
+
 export const getdatos = async (req: Request, res: Response): Promise<any> => {
     try {
-    const page = parseInt(req.query.page as string) || 1;
-    const pageSize = parseInt(req.query.pageSize as string) || 100;
-    console.log(page)
+    const { fechaCaptura, limite_registros, pagina } = req.body;
+    console.log('llege')
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    //const page = parseInt(req.query.page as string) || 1;
+    //const pageSize = parseInt(req.query.pageSize as string) || 100;
+    const limite = Number(limite_registros);
+    const page = Number(pagina);  
+    console.log(page, fechaCaptura, limite_registros, pagina)
+
+    if(!regex.test(fechaCaptura)){
+      return res.status(401).json({
+            error: '401',
+            message: 'Formato de fecha incorrecto'
+      });
+
+    }else if (isNaN(limite) || isNaN(page)){
+      return res.status(401).json({
+            error: '401',
+            message: 'Formato incorrecto'
+      });
+    }
+
+    const limit = limite;                      
+    const offset = (page - 1) * limite; 
+    
 
     const { count, rows } = await Release.findAndCountAll({
       include: [
@@ -127,8 +150,8 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
           ]
         }
       ],
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
+      limit: limit,
+      offset: offset,
       order: [['id', 'ASC']]
     });
 
@@ -153,16 +176,16 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
         tender: release.tender || null,
         language: release.language,
         awards: release.awards || [],
-        contracts: release.contracts || []
+        contracts: [release.contracts || []]
       };
     });
 
     res.json({
       pagination: {
-        pageSize,
         page,
+        limit,
         totalRows: count,
-        hasNextPage: page * pageSize < count
+        hasNextPage: page * limit < count
       },
       results
     });

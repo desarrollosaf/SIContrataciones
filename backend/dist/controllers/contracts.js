@@ -36,9 +36,28 @@ const awarditem_1 = __importDefault(require("../models/awarditem"));
 const contractsitem_1 = __importDefault(require("../models/contractsitem"));
 const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 100;
-        console.log(page);
+        const { fechaCaptura, limite_registros, pagina } = req.body;
+        console.log('llege');
+        const regex = /^\d{4}-\d{2}-\d{2}$/;
+        //const page = parseInt(req.query.page as string) || 1;
+        //const pageSize = parseInt(req.query.pageSize as string) || 100;
+        const limite = Number(limite_registros);
+        const page = Number(pagina);
+        console.log(page, fechaCaptura, limite_registros, pagina);
+        if (!regex.test(fechaCaptura)) {
+            return res.status(401).json({
+                error: '401',
+                message: 'Formato de fecha incorrecto'
+            });
+        }
+        else if (isNaN(limite) || isNaN(page)) {
+            return res.status(401).json({
+                error: '401',
+                message: 'Formato incorrecto'
+            });
+        }
+        const limit = limite;
+        const offset = (page - 1) * limite;
         const { count, rows } = yield release_1.default.findAndCountAll({
             include: [
                 { model: metadata_1.default, as: 'metadata' },
@@ -135,8 +154,8 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     ]
                 }
             ],
-            limit: pageSize,
-            offset: (page - 1) * pageSize,
+            limit: limit,
+            offset: offset,
             order: [['id', 'ASC']]
         });
         console.log(rows);
@@ -158,15 +177,15 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 tender: release.tender || null,
                 language: release.language,
                 awards: release.awards || [],
-                contracts: release.contracts || []
+                contracts: [release.contracts || []]
             };
         });
         res.json({
             pagination: {
-                pageSize,
                 page,
+                limit,
                 totalRows: count,
-                hasNextPage: page * pageSize < count
+                hasNextPage: page * limit < count
             },
             results
         });

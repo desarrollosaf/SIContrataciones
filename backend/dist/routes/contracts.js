@@ -7,5 +7,5 @@ const express_1 = require("express");
 const contracts_1 = require("../controllers/contracts");
 const verifyAccessToken_1 = __importDefault(require("../middlewares/verifyAccessToken"));
 const router = (0, express_1.Router)();
-router.get("/api/contracts/get", verifyAccessToken_1.default, contracts_1.getdatos);
+router.post("/api/contrataciones", verifyAccessToken_1.default, contracts_1.getdatos);
 exports.default = router;
