@@ -185,6 +185,7 @@ export const getdatos = async (req: Request, res: Response): Promise<any> => {
         page,
         limit,
         totalRows: count,
+        paginaSize: rows.length,
         hasNextPage: page * limit < count
       },
       results
