@@ -185,6 +185,7 @@ const getdatos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 page,
                 limit,
                 totalRows: count,
+                paginaSize: rows.length,
                 hasNextPage: page * limit < count
             },
             results
